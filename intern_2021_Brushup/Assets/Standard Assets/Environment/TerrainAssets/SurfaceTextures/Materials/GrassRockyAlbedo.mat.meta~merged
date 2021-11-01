@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+<<<<<<< HEAD
+guid: 717c455f6ef7d8d498e920f1abe18b21
+=======
+<<<<<<< HEAD:intern_2021/Assets/SD/Material/M_Traget.mat.meta
+guid: d85767ad46fc2594ca5ef0737721c303
+=======
+guid: 717c455f6ef7d8d498e920f1abe18b21
+>>>>>>> EndoWataru/bonusbuilding:intern_2021/Assets/Standard Assets/Environment/TerrainAssets/SurfaceTextures/Materials/GrassRockyAlbedo.mat.meta
+>>>>>>> EndoWataru/bonusbuilding
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
