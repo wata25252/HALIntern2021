@@ -15,19 +15,24 @@ namespace SD
     {
         private GameObject _gameManager;
         private SE _se; 
-        private float _aadTime;        
+        // 加算する時間
+        private float _addTime;     
 
         // Start is called before the first frame update
         void Start()
         {
             _gameManager = GameObject.Find("GameManager");
             _se = GameObject.Find("SEManager").GetComponent<SE>();
+
+            _addTime = 10; // 10秒
         }
 
         // Update is called once per frame
         void Update()
         {
-            _aadTime = 10;        }
+
+            
+        }
 
         private void FixedUpdate()
         {
@@ -37,10 +42,12 @@ namespace SD
         {
             if(other.gameObject.CompareTag("Player"))
             {
-                _gameManager.GetComponent<TK.GameManager>().AddTime(_aadTime);
+                // 時間を加算する
+                _gameManager.GetComponent<TK.GameManager>().AddTime(_addTime);
+                // SEを鳴らす
                 _se.Play(6);
+                // コライダーを削除
                 Destroy(this.gameObject);
-                Debug.Log("Triggr");
             }
         }
     }

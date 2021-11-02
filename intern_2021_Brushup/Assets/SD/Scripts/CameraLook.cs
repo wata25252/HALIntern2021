@@ -27,6 +27,7 @@ namespace SD
         // Start is called before the first frame update
         void Start()
         {
+            // 位置を初期化
             _playerTransform = _player.transform;
             _forward = Vector3.forward;
             _LookHeight = 1.0f;
@@ -42,17 +43,24 @@ namespace SD
 
         private void FixedUpdate()
         {
-            var nullCheck = _player?.activeInHierarchy;
+            // プレイヤーのnullチェック
+            var nullCheck = _player?.activeInHierarchy; 
             
+            // 進む方向
             _forward = _player.GetComponent<TM.PlayerController>().CameraForward;
+
+            // 位置を更新
             _position = _playerTransform.position; // プレイヤーの位置
             this.transform.position = new Vector3(_position.x, _position.y + _LookHeight, _playerTransform.position.z);
 
+            // このオブジェクトの前ベクトルが進む方向を向くように回転させる
             Quaternion quaternion = Quaternion.identity;
+            // 前ベクトルが更新されたら、回転する
             if (_forward != Vector3.zero)
             {
                 quaternion = Quaternion.LookRotation(_forward);
             }
+            // 線形補間を使った回転
             this.transform.rotation = Quaternion.Lerp(this.transform.rotation, quaternion, 1.0f);
         }
     }

@@ -38,7 +38,10 @@ namespace SD
         public override void Tick(GameEvent gameEvent)
         {            
             _nowTime += Time.deltaTime;
+            // 雪オブジェクトをスポーンさせる
             _spawn.Spawn();
+            
+            // ３秒間、点滅
             if (_nowTime <= 3)
             {
                 _ui.GetComponent<EventUi>().Blink();
@@ -47,17 +50,18 @@ namespace SD
             {
                 _ui.GetComponent<EventUi>().End();
             }
+            // イベント終了
             if (_nowTime > _timeLimit)
             {
                 _nowTime = 0;
-                gameEvent.ChangeEvent(new EventNone());
+                this.End(gameEvent);
             }            
         }
 
         public override void End(GameEvent gameEvent)
         {
             _ui.GetComponent<EventUi>().End();
-            gameEvent.ChangeEvent(new EventNone()); // イベント終了
+            gameEvent.ChangeEvent(new EventNone()); // イベントを変更
             _nowTime = 0;
         }
     }

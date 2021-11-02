@@ -21,6 +21,7 @@ public class SnowSpawn : MonoBehaviour
     void Start()
     {
         GetComponent<Renderer>().enabled = false;
+        // スポーンする範囲
         _spawnPositionMax = new Vector2(this.gameObject.transform.localScale.x / 2, this.gameObject.transform.localScale.z / 2);        
     }
 

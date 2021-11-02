@@ -54,11 +54,12 @@ namespace SD
             return isdead;
         }
 
+        // リザルト
         public void ShowResult()
         {
             if (!isdead)
             {
-                Debug.Log("sinda");
+                // ゲームを止める
                 _gameManager.GetComponent<TK.GameManager>().GameStop();
 
                 Invoke("SaveScore", 0.1f);

@@ -32,8 +32,9 @@ namespace SD
 
         }
 
+        // マテリアルの変更
         public void Change(int i)
-        {
+        {            
             this.gameObject.GetComponent<MeshCollider>().material = _material[i];
         }
     }

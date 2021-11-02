@@ -40,7 +40,11 @@ namespace SD
         public override void Tick(GameEvent gameEvent)
         {
             _nowTime += Time.deltaTime;
+
+            // カメラを揺らす
             _camera.CameraSheke();
+
+            // ３秒間点滅
             if (_nowTime <= 3)
             {
                 _ui.GetComponent<EventUi>().Blink();
@@ -49,6 +53,7 @@ namespace SD
             {
                 _ui.GetComponent<EventUi>().End();
             }
+            // イベントの終了
             if (_nowTime > _timeLimit)
             {
                 this.End(gameEvent);
@@ -58,7 +63,7 @@ namespace SD
         public override void End(GameEvent gameEvent)
         {
             _ui.GetComponent<EventUi>().End();
-            gameEvent.ChangeEvent(new EventNone()); // イベント終了
+            gameEvent.ChangeEvent(new EventNone()); // イベントを変更
             _nowTime = 0;
         }
 

@@ -53,7 +53,6 @@ namespace SD
             _gameObject.transform.localEulerAngles = new Vector3(0, 0, _angle);
 
             _text.text = _gameManager._timeCount.ToString("F1");
-            
         }
     }
 }
