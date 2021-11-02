@@ -31,16 +31,18 @@ namespace SD
 
         private void FixedUpdate()
         {
+            // ゲーム中
             if(!_manager.IsGameEnd())
             {
-                _event.Tick(this);                
+                _event.Tick(this); // イベントの更新処理
             }
-            else
+            else　// ゲーム終了なら、イベントを強制終了
             {
                 _event.End(this);
             }
         }
 
+        // イベントの変更
         public void ChangeEvent(EventBase nextevent)
         {
             _event = nextevent;           

@@ -31,10 +31,13 @@ namespace SD
         {
 
         }
-
+        
+        // 隕石を壊す
         public void Break()
         {
+            // Destroyするまでの時間
             float r = Random.Range(0.1f, 3.0f);
+            // 消す
             Destroy(this.gameObject, r);
         }
     }

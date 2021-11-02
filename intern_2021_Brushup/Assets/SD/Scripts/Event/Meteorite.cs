@@ -18,6 +18,7 @@ namespace SD
         private GameObject _ui;
         private bool _isSpawn;
 
+        // 開始
         public override void Begin()
         {
             _ui = GameObject.Find("Meteorite");           
@@ -35,23 +36,26 @@ namespace SD
         public override void Tick(GameEvent gameEvent)
         {
             _nowTime += Time.deltaTime;
+            // スポーンをしていなければ、スポーン
             if(!_isSpawn)
-            {
+            {                
                 _meteoSpawn.GetComponent<MeteoSpawn>().Spawn();
                 _isSpawn = true;
                 
             }
+            // ３秒間、UIを点滅させる
             if (_nowTime <= 3)
             {
                 _ui.GetComponent<EventUi>().Blink();
             }
-            else
+            else // 3秒たったら、消す
             {
                 _ui.GetComponent<EventUi>().End();
             }
+            // 5秒間たったら、イベントを変える
             if (_nowTime > 5)
             {
-                _nowTime = 3;             
+                _nowTime = 0;             
                 gameEvent.ChangeEvent(new EventNone());
             }
         }

@@ -15,9 +15,11 @@ namespace SD
     public class EventUi : MonoBehaviour
     {
         [SerializeField] private Text _text;
+        // デフォルトの設定
         private Color _defaultImage;
         private Color _defaultText;
-        private float _time;
+
+        private float _time;　// 時間計測
 
         // Start is called before the first frame update
         void Start()
@@ -35,8 +37,10 @@ namespace SD
 
         }
 
+        // 終了
         public void End()
         {
+            // デフォルトに戻す
             this.gameObject.GetComponent<Image>().color = new Color(_defaultImage.r, _defaultImage.g, _defaultImage.b, 0.0f);
             _text.color = new Color(_defaultText.r, _defaultText.g, _defaultText.b, 0.0f);
         }
@@ -48,6 +52,7 @@ namespace SD
             _text.color = getAlpha(_text.color);
         }
 
+        // a値を上下させる
         private Color getAlpha(Color color)
         {
             _time += Time.deltaTime * 5.0f;

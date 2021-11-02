@@ -14,8 +14,8 @@ namespace SD
     public class EarthQuake : EventBase
     {
         private GameObject _playerCollider; // プレイヤー
-        private GameObject _ui;
-        private Sheke _camera;
+        private GameObject _ui; // UI
+        private Sheke _camera;  // 
         private float _timeLimit;
 
         public override void Begin()

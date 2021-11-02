@@ -19,13 +19,14 @@ namespace SD
         public override void Begin()
         {
             _playerCollider = GameObject.Find("Player/Collider");
-            // 物理マテリアルの切り替える
+            // 物理マテリアルをデフォルトにする
             _playerCollider.GetComponent<PhysicMatList>().Change(0);            
         }
 
         public override void Tick(GameEvent gameEvent)
         {
             _nowTime += Time.deltaTime;
+
             if (_nowTime > _eventSpan)
             {
                 _nowTime = 0;
@@ -34,7 +35,7 @@ namespace SD
                 int i = (int)Random.Range(0, 3);
                 if(i == 0)
                 {
-                    // イベント
+                    // イベントを選択
                     int j = (int)Random.Range(0, 3);
                     switch (j)
                     {
