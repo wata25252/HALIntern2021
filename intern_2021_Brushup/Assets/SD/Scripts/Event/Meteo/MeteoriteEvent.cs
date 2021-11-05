@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace SD
 {
-    public class Meteorite : EventBase
+    public class MeteoriteEvent : EventBase
     {
         private GameObject _player;
         private GameObject _meteoSpawn;

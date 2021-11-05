@@ -40,13 +40,13 @@ namespace SD
                     switch (j)
                     {
                         case 0:
-                            gameEvent.ChangeEvent(new EarthQuake());
+                            gameEvent.ChangeEvent(new EarthQuakeEvent());
                             break;
                         case 1:
-                            gameEvent.ChangeEvent(new Snow());
+                            gameEvent.ChangeEvent(new SnowEvent());
                             break;
                         case 2:
-                            gameEvent.ChangeEvent(new Meteorite());
+                            gameEvent.ChangeEvent(new MeteoriteEvent());
                             break;
                     }
 

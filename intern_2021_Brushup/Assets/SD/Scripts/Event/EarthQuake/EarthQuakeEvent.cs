@@ -1,47 +1,50 @@
 ﻿/*-------------------------------------------------------
  * 
- *      [Snow.cs]
- *      ゲームイベント：大雪
+ *      [EarthQuake.cs]
+ *      ゲームイベント：地震
+ *      Author : 出合翔太
  * 
- -------------------------------------------------------*/
+ ------------------------------------------------------*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace SD
 {
-    public class Snow : EventBase
+    public class EarthQuakeEvent : EventBase
     {
         private GameObject _playerCollider; // プレイヤー
-        private GameObject _ui;
-        private SnowSpawn _spawn;
+        private GameObject _ui; // UI
+        private Sheke _camera;  // 
         private float _timeLimit;
 
         public override void Begin()
         {
-            _spawn = GameObject.Find("SnowSpawn").GetComponent<SnowSpawn>(); ;
-            // イベント発生Ui
-            _ui = GameObject.Find("Snow");            
+            _camera = GameObject.Find("Quake").GetComponent<Sheke>();
 
+            _ui = GameObject.Find("EarthQuake");
+            
             _playerCollider = GameObject.Find("Player/Collider");
             // 物理マテリアルの切り替える
-            _playerCollider.GetComponent<PhysicMatList>().Change(2);
+            _playerCollider.GetComponent<PhysicMatList>().Change(1);
 
             _nowTime = 0;
+            // イベントの時間
             _timeLimit = Random.Range(5, 20);
 
             // サウンド再生
             SE _se = GameObject.Find("SEManager").GetComponent<SE>();
-            _se.Play(0);
+            _se.Play(0);            
         }
 
         public override void Tick(GameEvent gameEvent)
-        {            
+        {
             _nowTime += Time.deltaTime;
-            // 雪オブジェクトをスポーンさせる
-            _spawn.Spawn();
-            
-            // ３秒間、点滅
+
+            // カメラを揺らす
+            _camera.CameraSheke();
+
+            // ３秒間点滅
             if (_nowTime <= 3)
             {
                 _ui.GetComponent<EventUi>().Blink();
@@ -50,10 +53,9 @@ namespace SD
             {
                 _ui.GetComponent<EventUi>().End();
             }
-            // イベント終了
+            // イベントの終了
             if (_nowTime > _timeLimit)
             {
-                _nowTime = 0;
                 this.End(gameEvent);
             }            
         }
@@ -64,5 +66,6 @@ namespace SD
             gameEvent.ChangeEvent(new EventNone()); // イベントを変更
             _nowTime = 0;
         }
+
     }
 }
