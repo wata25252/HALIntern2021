@@ -14,16 +14,23 @@ namespace SD
     {
         private GameObject _playerCollider; // プレイヤー
         private GameObject _ui;
+        //　
         private SnowSpawn _spawn;
         private float _timeLimit;
 
+        // スポーンした雪のパーティクル
+        private GameObject _snowEffect;
+
         public override void Begin()
         {
-            _spawn = GameObject.Find("SnowSpawn").GetComponent<SnowSpawn>(); ;
+            _spawn = GameObject.FindGameObjectWithTag("Event_Snow").GetComponent<SnowSpawn>(); ;
+            // エフェクト発生
+            _snowEffect = _spawn.Spawn();
+            
             // イベント発生Ui
-            _ui = GameObject.Find("Snow");            
+            _ui = GameObject.FindGameObjectWithTag("UI_Snow");            
 
-            _playerCollider = GameObject.Find("Player/Collider");
+            _playerCollider = GameObject.FindGameObjectWithTag("Player_Collider");
             // 物理マテリアルの切り替える
             _playerCollider.GetComponent<PhysicMatList>().Change(2);
 
@@ -31,15 +38,13 @@ namespace SD
             _timeLimit = Random.Range(5, 20);
 
             // サウンド再生
-            SE _se = GameObject.Find("SEManager").GetComponent<SE>();
+            SE _se = GameObject.FindGameObjectWithTag("Manager_SEManager").GetComponent<SE>();
             _se.Play(0);
         }
 
         public override void Tick(GameEvent gameEvent)
         {            
             _nowTime += Time.deltaTime;
-            // 雪オブジェクトをスポーンさせる
-            _spawn.Spawn();
             
             // ３秒間、点滅
             if (_nowTime <= 3)
@@ -60,6 +65,8 @@ namespace SD
 
         public override void End(GameEvent gameEvent)
         {
+            // パーティクルエフェクトを削除
+            Destroy(_snowEffect);
             _ui.GetComponent<EventUi>().End();
             gameEvent.ChangeEvent(new EventNone()); // イベントを変更
             _nowTime = 0;

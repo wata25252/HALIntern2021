@@ -13,7 +13,6 @@ namespace SD
 {
     public class MeteoriteEvent : EventBase
     {
-        private GameObject _player;
         private GameObject _meteoSpawn;
         private GameObject _ui;
         private bool _isSpawn;
@@ -21,15 +20,14 @@ namespace SD
         // 開始
         public override void Begin()
         {
-            _ui = GameObject.Find("Meteorite");           
-            _player = GameObject.Find("Player");
-            _meteoSpawn = GameObject.Find("MeteoSpawn");
+            _ui = GameObject.FindGameObjectWithTag("UI_Meteorite");           
+            _meteoSpawn = GameObject.FindGameObjectWithTag("Event_Meteo");
             
             _isSpawn = false;
             _nowTime = 0;
 
             // サウンド再生
-            SE _se = GameObject.Find("SEManager").GetComponent<SE>();
+            SE _se = GameObject.FindGameObjectWithTag("Manager_SEManager").GetComponent<SE>();
             _se.Play(0);
         }
 

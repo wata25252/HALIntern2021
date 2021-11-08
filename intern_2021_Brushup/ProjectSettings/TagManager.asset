@@ -8,6 +8,14 @@ TagManager:
   - Building
   - Ground
   - Wall
+  - Manager_SEManager
+  - Player_Collider
+  - UI_Snow
+  - UI_EarthQuake
+  - UI_Meteorite
+  - Event_Quake
+  - Event_Snow
+  - Event_Meteo
   layers:
   - Default
   - TransparentFX

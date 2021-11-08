@@ -20,11 +20,11 @@ namespace SD
 
         public override void Begin()
         {
-            _camera = GameObject.Find("Quake").GetComponent<Sheke>();
+            _camera = GameObject.FindGameObjectWithTag("Event_Quake").GetComponent<Sheke>();
 
-            _ui = GameObject.Find("EarthQuake");
+            _ui = GameObject.FindGameObjectWithTag("UI_EarthQuake");
             
-            _playerCollider = GameObject.Find("Player/Collider");
+            _playerCollider = GameObject.FindGameObjectWithTag("Player_Collider");
             // 物理マテリアルの切り替える
             _playerCollider.GetComponent<PhysicMatList>().Change(1);
 
@@ -33,7 +33,7 @@ namespace SD
             _timeLimit = Random.Range(5, 20);
 
             // サウンド再生
-            SE _se = GameObject.Find("SEManager").GetComponent<SE>();
+            SE _se = GameObject.FindGameObjectWithTag("Manager_SEManager").GetComponent<SE>();
             _se.Play(0);            
         }
 

@@ -14,18 +14,28 @@ namespace SD
     public class MeteoSpawn : MonoBehaviour
     {
         // スポーンさせるオブジェクト
-        [SerializeField] private GameObject _meteo; 
+        [Header("スポーンさせるオブジェクト")]
+        [SerializeField] private GameObject _meteo;
+        private GameObject _player;
 
         // Start is called before the first frame update
         void Start()
         {
-
+            _player = GameObject.Find("Player");
         }
 
         // Update is called once per frame
         void Update()
         {
 
+        }
+
+        private void FixedUpdate()
+        {
+            var playerNullCheck = _player?.activeSelf;
+
+            // プレイヤーの方向を見る
+            this.transform.LookAt(_player.transform);
         }
 
         public void Spawn()
