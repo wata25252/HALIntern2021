@@ -14,7 +14,7 @@ namespace SD
     public class EventNone : EventBase
     {
         private GameObject _playerCollider; // プレイヤー
-        private float _eventSpan = 5.0f;    // イベントスパン
+        private float _eventSpan = 1.0f;    // イベントスパン
 
         public override void Begin()
         {
@@ -33,12 +33,12 @@ namespace SD
 
                 // 1/3の確率でイベント発生
                 int i = (int)Random.Range(0, 3);
-                //i = 0;
+                i = 0;
                 if(i == 0)
                 {
                     // イベントを選択
                     int j = (int)Random.Range(0, 3);
-                    switch (j)
+                    switch (2)
                     {
                         case 0:
                             gameEvent.ChangeEvent(new EarthQuakeEvent());
