@@ -36,6 +36,8 @@ namespace SD
 
             // プレイヤーの方向を見る
             this.transform.LookAt(_player.transform);
+
+            Debug.DrawLine(transform.position, transform.position + transform.forward * 500.0f, Color.red);
         }
 
         public void Spawn()
@@ -43,22 +45,9 @@ namespace SD
             // インスタンスの生成
             GameObject meteo = Instantiate(_meteo, this.transform);
 
-            var dir_go_player = _player.GetComponent<TM.PlayerController>().CameraForward;
-
-            float random = Random.Range(1.0f, 5.0f);
-
-            Vector3 dir = _player.transform.position - (dir_go_player * random);
-
-            // 方向の補正
-            /*
-            Vector3 random = new Vector3();
-            random.x = Random.Range(-0.1f, 0.1f);
-            random.y = 0.0f;
-            random.z = Random.Range(-0.1f, 0.1f);
+           // 隕石を飛ばす方向を決める
+            Vector3 dir = meteo.transform.forward;
             
-            // 隕石を飛ばす方向を決める
-            Vector3 dir = meteo.transform.forward + random;
-            */
             // 力を加えて、飛ばす
             meteo.GetComponent<Rigidbody>().AddForce(dir * 5000.0f);
 
