@@ -34,11 +34,6 @@ namespace SD
             // ゲームが終了したら
             if(_gameManager.IsGameEnd())
             {                
-                // 
-                var trans = _playerCameralook.transform;
-                GetComponent<Cinemachine.CinemachineVirtualCamera>().Follow = trans;
-                GetComponent<Cinemachine.CinemachineVirtualCamera>().LookAt = trans;
-
                 // 非アクティブ
                 this.gameObject.SetActive(false);
             }

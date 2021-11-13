@@ -14,7 +14,7 @@ namespace SD
     public class EventNone : EventBase
     {
         private GameObject _playerCollider; // プレイヤー
-        private float _eventSpan = 1.0f;    // イベントスパン
+        private float _eventSpan = 5.0f;    // イベントスパン
 
         public override void Begin()
         {
@@ -25,6 +25,7 @@ namespace SD
 
         public override void Tick(GameEvent gameEvent)
         {
+
             _nowTime += Time.deltaTime;
 
             if (_nowTime > _eventSpan)
