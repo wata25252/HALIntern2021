@@ -13,16 +13,18 @@ namespace SD
 {
     public class MeteoSpawn : MonoBehaviour
     {
-        // スポーンさせるオブジェクト
-        [Header("スポーンさせるオブジェクト")]
+        [Header("隕石")]
         [SerializeField] private GameObject _meteo;
-        private GameObject _player;
+      
+        [Header("隕石の移動スピード")] 
+        [SerializeField, Range(100.0f, 1000.0f)]
+        private float _speed = 500.0f;
 
+        // ターゲットとなるオブジェクト
+        private GameObject _player;
         private Vector3 _targetPosition;
         private Vector3 _targetPrePosition;
         private Vector3 _targetPrePosition2;
-
-        private float _speed = 500.0f;
 
         // Start is called before the first frame update
         void Start()
@@ -38,6 +40,7 @@ namespace SD
 
         private void FixedUpdate()
         {
+            // プレイヤーのNullチェック
             var playerNullCheck = _player?.activeSelf;
 
             // プレイヤーの方向を見る
@@ -58,7 +61,7 @@ namespace SD
             meteo.GetComponent<Rigidbody>().AddForce((_targetPosition - this.transform.position).normalized * _speed, ForceMode.VelocityChange);
         }
 
-
+        #region 予測射撃用のヘルパー関数
         //線形予測射撃
         private Vector3 LinePrediction(Vector3 shotPosition, Vector3 targetPosition, Vector3 targetPrePosition, float bulletSpeed)
         {
@@ -142,5 +145,6 @@ namespace SD
         {
             return Quaternion.AngleAxis(f_angle, v3_axis) * (v3_target - v3_center) + v3_center;
         }
+        #endregion
     }
 }
