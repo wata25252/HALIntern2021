@@ -17,8 +17,8 @@ namespace SD
         [SerializeField] private GameObject _meteo;
       
         [Header("隕石の移動スピード")] 
-        [SerializeField, Range(100.0f, 1000.0f)]
-        private float _speed = 500.0f;
+        [SerializeField, Range(100.0f, 500.0f)]
+        private float _speed = 200.0f;
 
         // ターゲットとなるオブジェクト
         private GameObject _player;
