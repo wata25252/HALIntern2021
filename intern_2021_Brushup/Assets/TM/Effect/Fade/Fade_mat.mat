@@ -23,5 +23,5 @@ Material:
     m_Floats:
     - _FadeValue: 2
     m_Colors:
-    - _Aspect: {r: 800, g: 531, b: 0, a: 0}
+    - _Aspect: {r: 1600, g: 900, b: 0, a: 0}
     - _FadeColor: {r: 1, g: 1, b: 1, a: 0}

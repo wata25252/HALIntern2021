@@ -12,6 +12,7 @@ namespace TK
         //Start is called before the first frame update
         private void Start()
         {
+            //初期
             _timeCount = 60.0f;
         }
 
