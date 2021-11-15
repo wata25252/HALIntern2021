@@ -7,8 +7,16 @@ using UnityEngine;
 namespace TM
 {
     [RequireComponent(typeof(Player))]
-    public class AIController: MonoBehaviour
+    public class AIController : MonoBehaviour
     {
+        //周回範囲
+        [Header("AI設定")]
+        [SerializeField] private float _circumferenceRange = 10.0f;
+        //方向
+        private float _autoHorizontalPower = 0.0f;
+        private bool inArea = true;//行動範囲内かどうか 
+
+
         // ステータス
         [Header("ステータス")]
         [SerializeField] private uint _maxCrewCount;    // ステータスに影響する最大の乗員数
@@ -42,13 +50,11 @@ namespace TM
         public Vector3 _projectForward { get; set; }
 
         //AI用追加分====================================
-        [SerializeField]
-        private TK.Compass RightCompass;
-        [SerializeField]
-        private TK.Compass LeftCompass;
-
+        //倒れ検知用
+        [SerializeField] private TK.Compass RightCompass;
+        [SerializeField] private TK.Compass LeftCompass;
         //============================================
-       
+
 
         private void Start()
         {
@@ -65,6 +71,7 @@ namespace TM
         {
 
 
+
             // 前回転
             _rb.AddTorque(transform.right * PitchTorque * _verticalAxisInput * 100.0f);
 
@@ -79,42 +86,8 @@ namespace TM
             _rb.AddTorque(vel * RollTorque * _horizontalAxisInput);
             //Debug.DrawLine(transform.position, transform.position + _projectForward * 100.0f, Color.blue);   // デバッグ
 
-            // AI入力
-            _verticalAxisInput = 0.5f;
-
-            //RaycastHit hit;
-            //if (Physics.Raycast(transform.position, transform.position + vel, out hit, 10.0f))
-            //{
-            //    if (hit.collider.gameObject.tag == "Wall")
-            //    {
-            //        _horizontalAxisInput = 1;
-            //        Debug.Log("kabedayo");
-            //    }
-            //}
-
-
-            if (RightCompass._isHitGround)
-            {
-                _horizontalAxisInput = -1;
-            }
-            else if (LeftCompass._isHitGround)
-            {
-                _horizontalAxisInput = 1;
-            }
-            else
-            {
-                if (transform.position.magnitude >= 10
-    && Vector3.Dot(_projectForward, new Vector3(-transform.position.x, -transform.position.y, -transform.position.z)) < 0)
-                {
-                    _horizontalAxisInput = -1;
-                    _verticalAxisInput = 0.1f;
-
-                    Debug.Log("kabedayo");
-                }
-                else {
-                    _horizontalAxisInput = 0;
-                } 
-            }
+            // AI入力部分＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+            AIInput();
 
 
             // ----- これ以降デバッグ用処理 -----
@@ -141,5 +114,55 @@ namespace TM
             float factor = Mathf.Clamp01((float)_player.CrewCount / _maxCrewCount);
             return curve.Evaluate(factor) * (_maxSourceTorqueFactor - _minSourceTorqueFactor) + _minSourceTorqueFactor;
         }
+        private void AIInput()
+        {
+            _verticalAxisInput = 0.5f;
+
+            //コンパスが触れている＝倒れそうなときは立て直し優先
+            if (RightCompass._isHitGround)
+            {
+                _horizontalAxisInput = -1;
+            }
+            else if (LeftCompass._isHitGround)
+            {
+                _horizontalAxisInput = 1;
+            }
+            //それ以外の時は外に行き過ぎていたら旋回
+            else
+            {
+                //行動範囲外＆外側を向いているとき
+                if (transform.position.magnitude >= _circumferenceRange
+                    && Vector3.Dot(_projectForward, new Vector3(-transform.position.x, -transform.position.y, -transform.position.z)) < 0)
+                {
+                    if (inArea)
+                    {
+                        switch (Random.RandomRange(0,1))
+                        {
+                            case 0:
+                                _autoHorizontalPower = -1.0f;
+                                break;
+                            case 1:
+                                _autoHorizontalPower = 1.0f;
+
+                                break; 
+                        }
+                    }
+                    inArea = false;
+                    _horizontalAxisInput = _autoHorizontalPower;
+                    _verticalAxisInput = 0.1f;
+
+                    Debug.Log("kabedayo");
+                }
+                else//行動範囲内の時
+                {
+                    inArea = true;
+                    _horizontalAxisInput = 0.0f;
+                }
+            }
+        }
     }
+
+
 }
+
+
