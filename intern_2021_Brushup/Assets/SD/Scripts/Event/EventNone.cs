@@ -34,7 +34,6 @@ namespace SD
 
                 // 1/3の確率でイベント発生
                 int i = (int)Random.Range(0, 3);
-                i = 0;
                 if(i == 0)
                 {
                     // イベントを選択
