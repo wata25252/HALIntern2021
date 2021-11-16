@@ -14,7 +14,7 @@ namespace SD
     public class EventNone : EventBase
     {
         private GameObject _playerCollider; // プレイヤー
-        private float _eventSpan = 1.0f;    // イベントスパン
+        private float _eventSpan = 5.0f;    // イベントスパン
 
         public override void Begin()
         {
@@ -38,7 +38,7 @@ namespace SD
                 {
                     // イベントを選択
                     int j = (int)Random.Range(0, 3);
-                    switch (2)
+                    switch (j)
                     {
                         case 0:
                             gameEvent.ChangeEvent(new EarthQuakeEvent());
