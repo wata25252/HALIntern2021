@@ -18,17 +18,17 @@ namespace WE
 		// ビーコン
 		[SerializeField] private GameObject _beacon = null;
 
-		private TK.GameManager _gm;
+		private TK.GameManager _gm;  //GameManagerのスクリプト
 		private TM.Player _player;  //プレイヤーのスクリプト
-		private Rigidbody _rb;
+		private Rigidbody _rb;  //Rigidbody
 		public bool _isBreak;  //壊れたかフラグ
-		private bool _peopleGenerated = false;
+		private bool _peopleGenerated = false;  //人を生成したかフラグ
 
 		private void OnCollisionEnter(Collision other)
 		{
-			if(other.gameObject.tag == "Player")
+			if(other.gameObject.tag == "Player")  //プレイヤータグと当たったら
 			{
-				if (_player.CrewCount > _health)
+				if (_player.CrewCount > _health)  //建物の耐久値よりも収容人数が多かったら
 				{
 					gameObject.layer = 9;  //レイヤーを9番にしてプレイヤーと当たらないようにする
 
@@ -81,14 +81,14 @@ namespace WE
 
 		private void FixedUpdate()
 		{
-			if (gameObject.layer == 9)
+			if (gameObject.layer == 9)  //レイヤーが9番なら
 			{
 				Destroy(this.gameObject, 3);  //3秒後に消す
 			}
 
-			if (_player.CrewCount > _health)  //建物の耐久値を超えたらキネマティックを外す
+			if (_player.CrewCount > _health)  //建物の耐久値を超えたら
 			{
-				_rb.isKinematic = false;
+				_rb.isKinematic = false;  //キネマティックを外す
 				if(_effect != null)
                 {
 					Destroy(_gameObject);
