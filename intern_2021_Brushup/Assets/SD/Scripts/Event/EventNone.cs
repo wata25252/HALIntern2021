@@ -25,6 +25,7 @@ namespace SD
 
         public override void Tick(GameEvent gameEvent)
         {
+
             _nowTime += Time.deltaTime;
 
             if (_nowTime > _eventSpan)
