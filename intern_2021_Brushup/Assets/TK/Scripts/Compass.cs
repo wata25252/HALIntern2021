@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace TK
 {
+    //観覧車AIの倒れ検知用オブジェクト
+    //地面に触れているかを判定する。
     public class Compass : MonoBehaviour
     {
         [SerializeField]
