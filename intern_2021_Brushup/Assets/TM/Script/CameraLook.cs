@@ -44,7 +44,7 @@ namespace TM
         {
             var nullCheck = _player?.activeInHierarchy;
             
-            _forward = _player.GetComponent<TM.PlayerController>().CameraForward;
+            _forward = _player.GetComponent<TM.PlayerController>().DirectionTravel;
             _position = _playerTransform.position; // プレイヤーの位置
             this.transform.position = new Vector3(_position.x, _position.y + _LookHeight, _playerTransform.position.z);
 

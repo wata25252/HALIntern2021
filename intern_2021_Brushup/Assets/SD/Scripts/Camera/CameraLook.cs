@@ -47,7 +47,7 @@ namespace SD
             var nullCheck = _player?.activeInHierarchy; 
             
             // 進む方向
-            _forward = _player.GetComponent<TM.PlayerController>().CameraForward;
+            _forward = _player.GetComponent<TM.PlayerController>().DirectionTravel;
 
             // 位置を更新
             _position = _playerTransform.position; // プレイヤーの位置

@@ -39,7 +39,18 @@ namespace TM
         private float PitchTorque => _pitchTorqueFactor * CalcTorqueFactor(_pitchTorqueCurve);
         private float YawTorque => _yawTorqueFactor * CalcTorqueFactor(_yawTorqueCurve);
         private float RollTorque => _rollTorqueFactor * CalcTorqueFactor(_rollTorqueCurve);
-        public Vector3 CameraForward { get; private set; }
+        
+        // 進む方向
+        private Vector3 _direction_travel;
+
+        // 進む方向
+        public Vector3 DirectionTravel
+        {
+            get 
+            { 
+                return _direction_travel; 
+            }           
+        }
 
         private void Start()
         {
@@ -91,12 +102,12 @@ namespace TM
             _rb.AddTorque(vel * RollTorque * _horizontalAxisInput);
             //Debug.DrawLine(transform.position, transform.position + _projectForward * 100.0f, Color.blue);   // デバッグ
 
-            // カメラの前ベクトルを求める
-            CameraForward = Vector3.ProjectOnPlane(vel, Vector3.up);
+            // 進む方向を求める
+            _direction_travel = Vector3.ProjectOnPlane(vel, Vector3.up);
             //var rightNormal = Vector3.ProjectOnPlane(transform.right, Vector3.up);
             //CameraForward = Vector3.Reflect(CameraForward, rightNormal);
             //CameraForward = Vector3.ProjectOnPlane(cameraVec, Vector3.up);
-            Debug.DrawLine(transform.position, transform.position + CameraForward * 100.0f, Color.magenta);
+            Debug.DrawLine(transform.position, transform.position + _direction_travel * 100.0f, Color.magenta);
 
             //Debug.DrawLine(transform.position, transform.position + vel, Color.red);
         }
