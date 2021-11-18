@@ -35,8 +35,8 @@ namespace SD
         // Start is called before the first frame update
         void Start()
         {
-            _player = GameObject.Find("Player");
-            _se = GameObject.Find("SEManager").GetComponent<SE>();
+            _player = GameObject.FindWithTag("Player");
+            _se = GameObject.FindWithTag("Manager_SEManager").GetComponent<SE>();
 
             // タイムライン
             _isMoving = false;

@@ -19,10 +19,10 @@ namespace SD
 
         private Transform _playerTransform;
         private Vector3 _forward;
+        private Vector3 _right;
         private Vector3 _position;
 
         private float _LookHeight;  // 高さ
-        private float _LookForward; // 前方向 
 
         // Start is called before the first frame update
         void Start()
@@ -31,7 +31,6 @@ namespace SD
             _playerTransform = _player.transform;
             _forward = Vector3.forward;
             _LookHeight = 1.0f;
-            _LookForward = 6.0f;
             this.transform.position = new Vector3(0.0f, 3.0f + _LookHeight, 0.0f);     
         }
 
@@ -46,19 +45,35 @@ namespace SD
             // プレイヤーのnullチェック
             var nullCheck = _player?.activeInHierarchy; 
             
-            // 進む方向
-            _forward = _player.GetComponent<TM.PlayerController>().DirectionTravel;
-
             // 位置を更新
             _position = _playerTransform.position; // プレイヤーの位置
             this.transform.position = new Vector3(_position.x, _position.y + _LookHeight, _playerTransform.position.z);
 
+            // 進む方向のベクトル
+            _forward = _player.GetComponent<TM.PlayerController>().DirectionTravel;
+            _forward.Normalize(); // 正規化
+
+            // 左右の入力値を取得
+            float inputRight = _player.GetComponent<TM.PlayerController>().HorizontalInput;
+            
+            // 横方向のベクトルを求める
+            // 入力値をかけて、右か左か決める
+            _right = this.transform.right * inputRight;
+            _right.Normalize(); // 正規化
+            
+            Debug.DrawLine(this.transform.position, this.transform.position+ _right * 100.0f, Color.cyan);
+
+            // カメラを向けるベクトルを求める
+            var dirLook = _forward + _right;
+
+            Debug.DrawLine(this.transform.position, this.transform.position + dirLook * 100.0f, Color.red);
+
             // このオブジェクトの前ベクトルが進む方向を向くように回転させる
             Quaternion quaternion = Quaternion.identity;
             // 前ベクトルが更新されたら、回転する
-            if (_forward != Vector3.zero)
+            if (dirLook!= Vector3.zero)
             {
-                quaternion = Quaternion.LookRotation(_forward);
+                quaternion = Quaternion.LookRotation(dirLook);
             }
             // 線形補間を使った回転
             this.transform.rotation = Quaternion.Lerp(this.transform.rotation, quaternion, 1.0f);

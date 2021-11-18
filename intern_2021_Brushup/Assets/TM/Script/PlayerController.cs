@@ -43,14 +43,12 @@ namespace TM
         // 進む方向
         private Vector3 _direction_travel;
 
+        // 左右の軸入力値
+        public float HorizontalInput { get { return _horizontalAxisInput; } }
+
         // 進む方向
-        public Vector3 DirectionTravel
-        {
-            get 
-            { 
-                return _direction_travel; 
-            }           
-        }
+        public Vector3 DirectionTravel { get { return _direction_travel; } }
+
 
         private void Start()
         {
@@ -69,7 +67,7 @@ namespace TM
             if (_gameManager.GetComponent<TK.GameManager>().IsGameEnd()!=true)
             {
                 // 入力取得
-                _verticalAxisInput = Mathf.Max(Input.GetAxis(_verticalAxisInputName), 0.0f);
+                _verticalAxisInput = Mathf.Max(Input.GetAxis(_verticalAxisInputName), 0.01f);
                 _horizontalAxisInput = Input.GetAxis(_horizontalAxisInputName);
             }
             else
@@ -94,22 +92,15 @@ namespace TM
 
             // ターン
             var projectUp = Vector3.ProjectOnPlane(Vector3.up, transform.right);
-            _rb.AddTorque(projectUp * YawTorque * _horizontalAxisInput);
-            //Debug.DrawLine(transform.position, transform.position + projectUp * 100.0f, Color.green);   // デバッグ
+            _rb.AddTorque(projectUp * YawTorque * _horizontalAxisInput);         
 
             // 倒れる力
             var vel = _rb.velocity;
             _rb.AddTorque(vel * RollTorque * _horizontalAxisInput);
-            //Debug.DrawLine(transform.position, transform.position + _projectForward * 100.0f, Color.blue);   // デバッグ
-
+    
             // 進む方向を求める
             _direction_travel = Vector3.ProjectOnPlane(vel, Vector3.up);
-            //var rightNormal = Vector3.ProjectOnPlane(transform.right, Vector3.up);
-            //CameraForward = Vector3.Reflect(CameraForward, rightNormal);
-            //CameraForward = Vector3.ProjectOnPlane(cameraVec, Vector3.up);
             Debug.DrawLine(transform.position, transform.position + _direction_travel * 100.0f, Color.magenta);
-
-            //Debug.DrawLine(transform.position, transform.position + vel, Color.red);
         }
 
         /// <summary>
