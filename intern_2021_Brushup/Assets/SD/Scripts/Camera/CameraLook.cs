@@ -17,6 +17,9 @@ namespace SD
         [Header("プレイヤーのオブジェクト")]
         [SerializeField] private GameObject _player;
 
+        [Header("カメラの補正(大きいほど補正が小さくなる) 0～10")]
+        [SerializeField, Range(0.0f,10.0f)] private float _forwardScolar = 10.0f;
+
         private Transform _playerTransform;
         private Vector3 _forward;
         private Vector3 _right;
@@ -64,9 +67,9 @@ namespace SD
             Debug.DrawLine(this.transform.position, this.transform.position+ _right * 100.0f, Color.cyan);
 
             // カメラを向けるベクトルを求める
-            var dirLook = _forward + _right;
+            var dirLook = (_forward * _forwardScolar) + _right;
 
-            Debug.DrawLine(this.transform.position, this.transform.position + dirLook * 100.0f, Color.red);
+            Debug.DrawLine(this.transform.position, this.transform.position + dirLook * 100.0f, Color.cyan);
 
             // このオブジェクトの前ベクトルが進む方向を向くように回転させる
             Quaternion quaternion = Quaternion.identity;
