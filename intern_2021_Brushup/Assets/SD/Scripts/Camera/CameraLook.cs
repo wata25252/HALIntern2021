@@ -17,8 +17,8 @@ namespace SD
         [Header("プレイヤーのオブジェクト")]
         [SerializeField] private GameObject _player;
 
-        [Header("カメラの補正(大きいほど補正が小さくなる) 0～10")]
-        [SerializeField, Range(0.0f,10.0f)] private float _forwardScolar = 10.0f;
+        [Header("カメラの補正(大きいほど補正が小さくなる) 1～10")]
+        [SerializeField, Range(1.0f,10.0f)] private float _forwardScolar = 10.0f;
 
         private Transform _playerTransform;
         private Vector3 _forward;
