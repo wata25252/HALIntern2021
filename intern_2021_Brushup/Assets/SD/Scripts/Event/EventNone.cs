@@ -18,13 +18,14 @@ namespace SD
 
         public override void Begin()
         {
-            _playerCollider = GameObject.Find("Player/Collider");
+            _playerCollider = GameObject.FindGameObjectWithTag("Player_Collider");
             // 物理マテリアルをデフォルトにする
             _playerCollider.GetComponent<PhysicMatList>().Change(0);            
         }
 
         public override void Tick(GameEvent gameEvent)
         {
+
             _nowTime += Time.deltaTime;
 
             if (_nowTime > _eventSpan)
@@ -40,13 +41,13 @@ namespace SD
                     switch (j)
                     {
                         case 0:
-                            gameEvent.ChangeEvent(new EarthQuake());
+                            gameEvent.ChangeEvent(new EarthQuakeEvent());
                             break;
                         case 1:
-                            gameEvent.ChangeEvent(new Snow());
+                            gameEvent.ChangeEvent(new SnowEvent());
                             break;
                         case 2:
-                            gameEvent.ChangeEvent(new Meteorite());
+                            gameEvent.ChangeEvent(new MeteoriteEvent());
                             break;
                     }
 
