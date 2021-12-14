@@ -25,13 +25,6 @@ namespace SD
         void Start()
         {
             _player = GameObject.FindWithTag("Player");
-   
-            // Beaconのタグがついたオブジェクトの位置をリストに追加
-            foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Beacon"))
-            {
-                _beacons.Add(obj);
-            }
-
         }
 
         // Update is called once per frame
@@ -67,7 +60,7 @@ namespace SD
             float neardist = 0.0f;
             Vector3 nearPosition = new Vector3();
             
-            // Beaconのタグを取得
+            // Beaconのタグを持つゲームオブジェクトを取得
             foreach(GameObject obj in GameObject.FindGameObjectsWithTag("Beacon"))
             {
                 // 距離を測る   
@@ -82,10 +75,5 @@ namespace SD
             return nearPosition;
         }
 
-        // リストから削除する
-        public void RemoveBeacon(GameObject obj)
-        {
-            _beacons.Remove(obj);
-        }
     }
 }
