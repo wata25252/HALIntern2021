@@ -84,6 +84,7 @@ namespace WE
 			if (gameObject.layer == 9)  //レイヤーが9番なら
 			{
 				Destroy(this.gameObject, 3);  //3秒後に消す
+				Destroy(_beacon);
 			}
 
 			if (_player.CrewCount > _health)  //建物の耐久値を超えたら
@@ -92,7 +93,6 @@ namespace WE
 				if(_effect != null)
                 {
 					Destroy(_gameObject);
-					Destroy(_beacon);
                 }
 			}
 		}
