@@ -15,6 +15,7 @@ namespace SD
     public class MiniMapCamera : MonoBehaviour
     {
         [SerializeField] private GameObject _dirBeaconObject;
+        private TK.GameManager _gameManager;
         private GameObject _nearBeaconObject; // 近いビーコン
         private List<GameObject> _beacons = new List<GameObject>();
         private GameObject _player;
@@ -25,6 +26,7 @@ namespace SD
         void Start()
         {
             _player = GameObject.FindWithTag("Player");
+            _gameManager = GameObject.Find("GameManager").GetComponent<TK.GameManager>();
         }
 
         // Update is called once per frame
@@ -50,6 +52,12 @@ namespace SD
 
             // 位置を更新
             this.gameObject.transform.position = _playerPosition;
+
+            // ゲーム終了で非アクティブにする
+            if(_gameManager.IsGameEnd())
+            {
+                this.gameObject.SetActive(false);
+            }
         }
 
         // プレイヤーから近いビーコンを探す
