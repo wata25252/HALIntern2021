@@ -42,8 +42,7 @@ public class sDrumrollComponent : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        //textList[2].GetComponent<Text>().color = new Vector4(1, 1, 1, 0.5f);
-
+        //テキストの大きさとか透明度調整する。
         for (int i = 0; i < textList.Count; i++)
         {
             float tikasa = Mathf.Abs(textList[i].transform.position.y - originpos.y);
@@ -59,39 +58,32 @@ public class sDrumrollComponent : MonoBehaviour
             
 
         }
-        //if (Input.GetKeyDown(KeyCode.P))
-        //{
-        //    //var targety = textList[attensionIndex].transform.position.y - originpos.y;
-        //    ////今の位置を表す変数
-        //    ////目標値を表す変数
-        //    //for (int i = 0; i < textList.Count; i++)
-        //    //{
-        //    //    textList[i].transform.DOMoveY(textList[i].transform.position.y - targety, 2).SetEase(Ease.InOutCubic);
-        //    //}
-        //    LookThrough(0, 0);
-        //}
 
     }
 
     public void InputList(List<GameObject> inlist)
     {
+        //リストを外部から取得して使う
         textList.Clear();
 
         textList = inlist;
         originpos = textList[2].transform.position;
 
     }
+    //ランキングをいい感じに見るための関数。
     public void LookThrough(int endindex, int targetindex)
     {
+        float endscrolltime = endindex / 20;
+        float targetscrolltime = (endindex - targetindex) / 30+0.1f;
         var targety1 = textList[endindex].transform.position.y - originpos.y;//現在の位置からのターゲット１の相対位置
         var targety2 = textList[targetindex].transform.position.y - originpos.y;//現在の位置からのターゲット２の相対位置
         for (int i = 0; i < textList.Count; i++)
         {
             Sequence sequence = DOTween.Sequence();
             sequence.AppendInterval(0.5f);
-            sequence.Append(textList[i].transform.DOMoveY(textList[i].transform.position.y - targety1, 2).SetEase(Ease.InOutCubic));
+            sequence.Append(textList[i].transform.DOMoveY(textList[i].transform.position.y - targety1, endscrolltime).SetEase(Ease.InOutCubic));
 
-            sequence.Append(textList[i].transform.DOMoveY(textList[i].transform.position.y - targety2, 2).SetEase(Ease.InOutCubic));
+            sequence.Append(textList[i].transform.DOMoveY(textList[i].transform.position.y - targety2, targetscrolltime).SetEase(Ease.InOutCubic));
 
             //textList[i].transform.DOMoveY(textList[i].transform.position.y - targetpos.y, 2).SetEase(Ease.InOutCubic);
         }
