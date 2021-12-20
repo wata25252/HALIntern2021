@@ -14,6 +14,9 @@ namespace SD
 {
     public class MiniMapCamera : MonoBehaviour
     {
+        [SerializeField] private GameObject _dirBeaconObject;
+        private GameObject _nearBeaconObject; // 近いビーコン
+        private List<GameObject> _beacons = new List<GameObject>();
         private GameObject _player;
         private Vector3 _playerPosition;
         const float _offsetHeight = 40.0f;
@@ -22,6 +25,13 @@ namespace SD
         void Start()
         {
             _player = GameObject.FindWithTag("Player");
+   
+            // Beaconのタグがついたオブジェクトの位置をリストに追加
+            foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Beacon"))
+            {
+                _beacons.Add(obj);
+            }
+
         }
 
         // Update is called once per frame
@@ -36,6 +46,12 @@ namespace SD
             // カメラの位置をプレイヤーの位置に合わせる
             _playerPosition = _player.transform.position;
 
+            // 近いビーコンの位置を取得
+            var nearBeaconPosition = SerchBeaconNearPosition();
+
+            _dirBeaconObject.transform.position = _playerPosition;
+            _dirBeaconObject.transform.LookAt(nearBeaconPosition, Vector3.up);
+
             // y座標を補正する
             _playerPosition.y += _offsetHeight;
 
@@ -43,5 +59,33 @@ namespace SD
             this.gameObject.transform.position = _playerPosition;
         }
 
+        // プレイヤーから近いビーコンを探す
+        private Vector3 SerchBeaconNearPosition()
+        {
+
+            float tmpdist = 0.0f;
+            float neardist = 0.0f;
+            Vector3 nearPosition = new Vector3();
+            
+            // Beaconのタグを取得
+            foreach(GameObject obj in GameObject.FindGameObjectsWithTag("Beacon"))
+            {
+                // 距離を測る   
+                tmpdist = Vector3.Distance(obj.transform.position, _playerPosition);
+                if(neardist == 0.0f || neardist > tmpdist)
+                {
+                    neardist = tmpdist;
+                    nearPosition = obj.transform.position;
+                }
+            }
+            // 近い位置を返す
+            return nearPosition;
+        }
+
+        // リストから削除する
+        public void RemoveBeacon(GameObject obj)
+        {
+            _beacons.Remove(obj);
+        }
     }
 }
