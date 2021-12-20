@@ -7,6 +7,25 @@ using DG.Tweening;
 
 public class NCMB_leaderboard : MonoBehaviour
 {
+    //変更の方針
+    //list部分を可変にする
+    //listをListにする。
+    //テキストソースを作る。
+    //必要な数文生成する。
+    //list部分を生成にする
+
+
+    //ランキング拡張　修正分
+    //ランキングの数
+    [SerializeField] private int _viewRankingNum = 5;
+    //ランキングのオブジェクトソース
+    [SerializeField] private GameObject _nameScoreSource;
+    //ランキング位置関連
+    [SerializeField] private Vector3 _scorePosition;
+    [SerializeField] private float _height=100;
+
+
+
     private NCMB_Ranker _currentRecord; //今回の記録
 
     [SerializeField] private bool _isOnline = false;//デバッグ用
@@ -24,8 +43,7 @@ public class NCMB_leaderboard : MonoBehaviour
     //表示する文字列
     [SerializeField] private Text _header;
     [SerializeField] private Text _failedHeader;
-    [SerializeField] private Text[] _top = new Text[5];
-    [SerializeField] private Text[] _top_score = new Text[5];
+    [SerializeField] private List<GameObject> _top = new List<GameObject>();
 
     //選択肢
     [SerializeField] private List<Text> _options;
@@ -50,6 +68,7 @@ public class NCMB_leaderboard : MonoBehaviour
         INPUT,
         SELECT,
     }
+
     [SerializeField] private RankingState _state = RankingState.BEGIN;
 
     private void Start()
@@ -64,7 +83,6 @@ public class NCMB_leaderboard : MonoBehaviour
         {
             case RankingState.BEGIN:
                 {
-
                 }
                 break;
             case RankingState.INPUT:
@@ -119,10 +137,6 @@ public class NCMB_leaderboard : MonoBehaviour
                 { }
                 break;
         }
-
-
-
-
     }
 
     private void FixedUpdate()
@@ -137,12 +151,23 @@ public class NCMB_leaderboard : MonoBehaviour
                 break;
             case RankingState.FETCH:
                 {
-                    if (fetchTopRankers()&&_isOnline)
+                    if (fetchTopRankers() && _isOnline)
                     {
+                        //ランキング表示の準備
+                        float posy = 0;
+                        for (int i = 0; i < _viewRankingNum+1; i++)//ランキング圏外ように一個余分に作る
+                        {
+                            var g = Instantiate(_nameScoreSource);
+                            g.transform.parent = this.transform;
+                            g.GetComponent<RectTransform>().localPosition = new Vector3(_scorePosition.x, _scorePosition.y+posy, _scorePosition.z);
+                            posy -= _height;
+                            _top.Add(g);
+                        }
+                        GetComponent<sDrumrollComponent>().InputList(_top);
+                        //もし失敗時メッセージが出てたら消しとく
+                        _failedHeader.GetComponent<TK.ViewUi>().HideMessage();
                         for (int i = 0; i < _failedOptions.Count; i++)
                         {
-                            _failedHeader.GetComponent<TK.ViewUi>().HideMessage();
-
                             if (_failedOptions[i].text.Length > 0)
                             {
                                 _failedOptions[i].GetComponent<TK.ViewUi>().HideMessage();
@@ -157,6 +182,7 @@ public class NCMB_leaderboard : MonoBehaviour
                         for (int i = 0; i < _failedOptions.Count; i++)
                         {
                             _failedOptions[i].GetComponent<TK.ViewUi>().ShowWindow();
+
                         }
                         _state = RankingState.FAILED;
                     }
@@ -190,11 +216,12 @@ public class NCMB_leaderboard : MonoBehaviour
                         bool first = true;
 
                         _header.GetComponent<TK.ViewUi>().ShowWindow();
-                        for (int i = 0; i < 5; i++)
+                        for (int i = 0; i < _top.Count-1; i++)
                         {
                             if (_topRankers[i].name == _currentRecord.name && _topRankers[i].score == _currentRecord.score && first)
                             {
-                                _top[i].DOColor(Color.yellow, 1.0f);
+                                _top[i].GetComponent<Text>().DOColor(Color.yellow, 1.0f);
+                                _top[i].transform.GetChild(0).GetComponent<Text>().DOColor(Color.yellow, 1.0f);
                                 _rankingNum = i;
                                 first = false;
                                 _isRankIn = true;
@@ -202,18 +229,39 @@ public class NCMB_leaderboard : MonoBehaviour
 
                             //_top[i].GetComponent<TK.ViewUi>().SetMessage(i + 1 + ". " + _topRankers[i].score.ToString() + "人");
                             _top[i].GetComponent<TK.ViewUi>().SetMessage(i + 1 + ". " + _topRankers[i].name);
-                            _top_score[i].GetComponent<TK.ViewUi>().SetMessage(_topRankers[i].score.ToString());
-                            _top[i].GetComponent<TK.ViewUi>().ShowWindow();
-                            _top_score[i].GetComponent<TK.ViewUi>().ShowWindow();
+                            _top[i].transform.GetChild(0).GetComponent<TK.ViewUi>().SetMessage(_topRankers[i].score.ToString());
+
+                            if (i > 5)
+                            {
+                                _top[i].GetComponent<TK.ViewUi>().InstantShow();
+                                _top[i].transform.GetChild(0).GetComponent<TK.ViewUi>().InstantShow();
+                            }
+                            else
+                            {
+                                _top[i].GetComponent<TK.ViewUi>().ShowWindow();
+                                _top[i].transform.GetChild(0).GetComponent<TK.ViewUi>().ShowWindow();
+                            }
                         }
 
                         if (_isRankIn)
                         {
                             _InputObject.SetActive(true);
                             _state = RankingState.INPUT;
+                            GetComponent<sDrumrollComponent>().LookThrough(_viewRankingNum - 1, _rankingNum);
+
                         }
                         else
                         {
+                            //自分のスコアを追記する
+                            _top[_viewRankingNum].GetComponent<Text>().DOColor(Color.yellow, 1.0f);
+                            _top[_viewRankingNum].transform.GetChild(0).GetComponent<Text>().DOColor(Color.yellow, 1.0f);
+
+                            _top[_viewRankingNum].GetComponent<TK.ViewUi>().SetMessage("圏外");
+                            _top[_viewRankingNum].transform.GetChild(0).GetComponent<TK.ViewUi>().SetMessage(_currentRecord.score.ToString());
+                            _top[_viewRankingNum].GetComponent<TK.ViewUi>().InstantShow();
+                            _top[_viewRankingNum].transform.GetChild(0).GetComponent<TK.ViewUi>().InstantShow();
+                            GetComponent<sDrumrollComponent>().LookThrough(_viewRankingNum - 1, _viewRankingNum);
+
                             for (int i = 0; i < _options.Count; i++)
                             {
                                 _options[i].GetComponent<TK.ViewUi>().ShowWindow();
@@ -327,6 +375,26 @@ public class NCMB_leaderboard : MonoBehaviour
             }
         });
     }
+
+    private void teatUpload()
+    {
+        NCMBObject obj = new NCMBObject("GameScore");
+        obj["name"] = "test";
+        obj["score"] = 123;
+        obj.SaveAsync((NCMBException e) =>
+        {
+            if (e != null)
+            {
+                Debug.Log("保存に失敗しました。エラーコード:" + e.ErrorCode);
+                //エラー処理
+            }
+            else
+            {
+                Debug.Log("保存に成功しました。ObjectId:" + obj.ObjectId);
+                //成功時の処理
+            }
+        });
+    }
     public void ViewRanking()
     {
         _gameBGM.GetComponent<AudioSource>().Stop();
@@ -350,7 +418,7 @@ public class NCMB_leaderboard : MonoBehaviour
 
         query.OrderByDescending("score");
 
-        query.Limit = 5;
+        query.Limit = _viewRankingNum;
 
         bool isConnected = true;
         query.FindAsync((List<NCMBObject> objList, NCMBException e) =>
