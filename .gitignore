@@ -60,6 +60,10 @@ crashlytics-build.properties
 
 intern_2021_Brushup/Library/
 intern_2021_Brushup/Temp/
+<<<<<<< HEAD
 intern_2021_Brushup/obj/Debug/Assembly-CSharp.csproj.AssemblyReference.cache
 intern_2021_Brushup/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 intern_2021_Brushup/obj/
+=======
+intern_2021_Brushup/Assets/RayFire/
+>>>>>>> 1e4e9733f1881204c98632e2691f85f11cb935fe
