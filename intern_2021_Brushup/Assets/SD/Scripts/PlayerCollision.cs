@@ -35,7 +35,7 @@ namespace SD
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("GroundInitializer"))
+            if (other.CompareTag("Ground"))
             {
                 ShowResult();
             }

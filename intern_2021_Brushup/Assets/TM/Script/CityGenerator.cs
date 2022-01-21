@@ -36,6 +36,7 @@ public class CityGenerator : SerializedMonoBehaviour
 
     [SerializeField] private int _seed;
     [SerializeField] private Vector2Int _width;
+    [SerializeField] private Vector2Int _gridSize;
     [SerializeField, Range(1, 15)] private int _maxSplit;
     [SerializeField] private Dictionary<GridRoadType, List<GameObject>> _gridRoadDatas;
     [SerializeField] private Dictionary<GridObjectType, List<GridObject>> _gridObjectDatas;
@@ -154,7 +155,10 @@ public class CityGenerator : SerializedMonoBehaviour
                 }
                 
                 var prefab = _gridRoadDatas[roadType].Random();
-                var pos = new Vector3(i * 4.0f, 0.0f, j * 4.0f);
+                var pos = new Vector3(
+                    (i - _width.x * 0.5f + 0.5f) * _gridSize.x,
+                    0.0f, 
+                    (j - _width.y * 0.5f + 0.5f) * _gridSize.y);
                 Instantiate(prefab, pos, rot, transform);
 
                 SkipGridInstantiate:
@@ -225,7 +229,10 @@ public class CityGenerator : SerializedMonoBehaviour
 
                 if (!foundObj) continue;
 
-                var pos = new Vector3(i * 4.0f + (objData.size.x - 1) * 2.0f, 0.0f, j * 4.0f + (objData.size.y - 1) * 2.0f);
+                var pos = new Vector3(
+                    (i - (_width.x - (objData.size.x - 1)) * 0.5f + 0.5f) * _gridSize.x,
+                    0.0f,
+                    (j - (_width.y - (objData.size.y - 1)) * 0.5f + 0.5f) * _gridSize.y);
                 Instantiate(objData.prefab, pos, rot, transform);
 
                 for (var k = 0; k < objData.size.y; k++)

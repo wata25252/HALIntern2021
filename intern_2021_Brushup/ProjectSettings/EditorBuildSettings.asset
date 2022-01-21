@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/TM/Scene/Master.unity
     guid: 2921b172077a7ee46b5aac4e6c8cd558
   - enabled: 0
@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/TK/Scenes/Master_offlineRanking.unity
     guid: d445cbcb0ecae6b45920744326cd1a96
   - enabled: 1
