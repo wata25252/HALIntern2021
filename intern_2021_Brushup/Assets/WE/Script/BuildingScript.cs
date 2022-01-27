@@ -91,8 +91,8 @@ namespace WE
 		{
 			if (gameObject.layer == 9)  //レイヤーが9番なら
 			{
-				Destroy(this.gameObject, 3);  //3秒後に消す
-				Destroy(_beacon);
+				//Destroy(this.gameObject, 3);  //3秒後に消す
+				//Destroy(_beacon);
 			}
 
 			if (_player.CrewCount > _health)  //建物の耐久値を超えたら
@@ -114,5 +114,24 @@ namespace WE
 
 			Destroy(gameObject);
         }
+
+		// 破壊されたとき
+        private void OnDestroy()
+        {
+			// 人の生成
+			if (!_peopleGenerated)
+			{
+				for (int i = 0; i < _peopleNumber; ++i)
+				{
+					Instantiate(_peoplePrefab, transform.position + Random.insideUnitSphere * _peopleGenerationRange, Quaternion.identity);
+				}
+				if (!_gm.IsGameEnd())
+				{
+					_player.CrewCount += _peopleNumber;  //乗客数を増加
+				}
+			}
+			_peopleGenerated = true;
+		    _isBreak = true;
+		}
 	}
 }
